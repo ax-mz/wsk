@@ -8,6 +8,14 @@ if (! $isAdmin) {
     exit 1
 }
 
+# Display hidden files & dirs for the current user
+Write-Host "Enable `"Show hidden elements`""
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Value "1" -PropertyType DWORD -Force | Out-Null
+
+# Display files extensions for the current user
+Write-Host "Enable `"Show file extensions`""
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Value "0" -PropertyType DWORD -Force | Out-Null
+
 $WD = "C:\Windows\Temp"
 
 # 7zip
