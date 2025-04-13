@@ -47,7 +47,7 @@ if (!(Get-Package | Select-Object -Property Name | Select-String "Firefox ESR"))
 
 # Firefox extensions
 $FIREFOX_EXTENSIONS = (
-    "i-dont-care-about-cookies",
+    "istilldontcareaboutcookies",
     "ublock-origin"
 )
 
