@@ -66,7 +66,7 @@ foreach ($EXT in $FIREFOX_EXTENSIONS){
         $EXT_LATEST_XPI = Invoke-WebRequest "$EXT_URL" | Select-String -Pattern 'href="(https://addons\.mozilla\.org/firefox/downloads/file/[^"]+?\.xpi)"' |
         ForEach-Object {$_.Matches[0].Groups[1].Value}
 
-        Invoke-WebRequest "$EXT_LATEST_XPI" -OutFile "$env:ProgramFiles\Mozilla Firefox\distribution\extensions\$EXT_ID.xpi"
+        Invoke-WebRequest "$EXT_LATEST_XPI" -OutFile "$EXT_PATH"
         Write-Host -ForegroundColor Green "OK"
     }
 }
