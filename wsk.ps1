@@ -58,7 +58,7 @@ foreach ($EXT in $FIREFOX_EXTENSIONS){
     Write-Host "  Installing $EXT... " -NoNewline
 
     $EXT_URL = "https://addons.mozilla.org/en-US/firefox/addon/$EXT"
-    $EXT_ID = curl.exe -s "$EXT_URL" | Select-String -Pattern '"guid":"([^"]+)"' | ForEach-Object {$_.Matches[0].Groups[1].Value}
+    $EXT_ID = curl.exe -sL "$EXT_URL" | Select-String -Pattern '"guid":"([^"]+)"' | ForEach-Object {$_.Matches[0].Groups[1].Value}
 
     $EXT_PATH = "$env:ProgramFiles\Mozilla Firefox\distribution\extensions\$EXT_ID.xpi"
     if (Test-Path -Path "$EXT_PATH"){
