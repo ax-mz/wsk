@@ -23,7 +23,7 @@ Write-Host "Installing 7-Zip... " -NoNewline
 
 if (!(Get-Package | Select-Object -Property Name | Select-String "7-Zip")){
     $7Z_PATH = "$WD\7z.exe"
-    Invoke-WebRequest 'https://www.7-zip.org/a/7z2409-x64.exe' -OutFile "$7Z_PATH"
+    curl.exe -s 'https://www.7-zip.org/a/7z2409-x64.exe' -o "$7Z_PATH"
     Start-Process "$7Z_PATH" /S -Wait
     Remove-Item "$7Z_PATH" -force
     Write-Host -ForegroundColor Green "OK"
@@ -37,7 +37,7 @@ Write-Host "Installing Firefox ESR... " -NoNewline
 
 if (!(Get-Package | Select-Object -Property Name | Select-String "Firefox ESR")){
     $FF_PATH = "$WD\ff-esr.exe"
-    Invoke-WebRequest 'https://download.mozilla.org/?product=firefox-esr-latest-ssl&os=win64&lang=fr' -OutFile "$FF_PATH"
+    curl.exe -sL 'https://download.mozilla.org/?product=firefox-esr-latest-ssl&os=win64&lang=fr' -o "$FF_PATH"
     Start-Process "$FF_PATH" /silent -Wait
     Remove-Item "$FF_PATH" -force
     Write-Host -ForegroundColor Green "OK"
