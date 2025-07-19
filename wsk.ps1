@@ -7,6 +7,7 @@ if (! $isAdmin) {
     pause
     exit 1
 }
+$ProgressPreference = 'SilentlyContinue'
 
 # Display hidden files & dirs for the current user
 Write-Host "Enable `"Show hidden elements`""
@@ -23,7 +24,7 @@ Write-Host "Installing 7-Zip... " -NoNewline
 
 if (!(Get-Package | Select-Object -Property Name | Select-String "7-Zip")){
     $7Z_PATH = "$WD\7z.exe"
-    curl.exe -s 'https://www.7-zip.org/a/7z2409-x64.exe' -o "$7Z_PATH"
+    curl.exe -sL 'https://www.7-zip.org/a/7z2409-x64.exe' -o "$7Z_PATH"
     Start-Process "$7Z_PATH" /S -Wait
     Remove-Item "$7Z_PATH" -force
     Write-Host -ForegroundColor Green "OK"
@@ -57,16 +58,16 @@ foreach ($EXT in $FIREFOX_EXTENSIONS){
     Write-Host "  Installing $EXT... " -NoNewline
 
     $EXT_URL = "https://addons.mozilla.org/en-US/firefox/addon/$EXT"
-    $EXT_ID = Invoke-WebRequest "$EXT_URL" | Select-String -Pattern '"guid":"([^"]+)"' | ForEach-Object {$_.Matches[0].Groups[1].Value}
+    $EXT_ID = curl.exe -s "$EXT_URL" | Select-String -Pattern '"guid":"([^"]+)"' | ForEach-Object {$_.Matches[0].Groups[1].Value}
 
     $EXT_PATH = "$env:ProgramFiles\Mozilla Firefox\distribution\extensions\$EXT_ID.xpi"
     if (Test-Path -Path "$EXT_PATH"){
         Write-Host -ForegroundColor Gray "Already installed"
     }else{
-        $EXT_LATEST_XPI = Invoke-WebRequest "$EXT_URL" | Select-String -Pattern 'href="(https://addons\.mozilla\.org/firefox/downloads/file/[^"]+?\.xpi)"' |
+        $EXT_LATEST_XPI = curl.exe -s "$EXT_URL" | Select-String -Pattern 'href="(https://addons\.mozilla\.org/firefox/downloads/file/[^"]+?\.xpi)"' |
         ForEach-Object {$_.Matches[0].Groups[1].Value}
 
-        Invoke-WebRequest "$EXT_LATEST_XPI" -OutFile "$EXT_PATH"
+        curl.exe -s "$EXT_LATEST_XPI" -o "$EXT_PATH"
         Write-Host -ForegroundColor Green "OK"
     }
 }
