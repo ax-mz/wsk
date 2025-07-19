@@ -64,7 +64,7 @@ foreach ($EXT in $FIREFOX_EXTENSIONS){
     if (Test-Path -Path "$EXT_PATH"){
         Write-Host -ForegroundColor Gray "Already installed"
     }else{
-        $EXT_LATEST_XPI = curl.exe -s "$EXT_URL" | Select-String -Pattern 'href="(https://addons\.mozilla\.org/firefox/downloads/file/[^"]+?\.xpi)"' |
+        $EXT_LATEST_XPI = curl.exe -sL "$EXT_URL" | Select-String -Pattern 'href="(https://addons\.mozilla\.org/firefox/downloads/file/[^"]+?\.xpi)"' |
         ForEach-Object {$_.Matches[0].Groups[1].Value}
 
         curl.exe -s "$EXT_LATEST_XPI" -o "$EXT_PATH"
