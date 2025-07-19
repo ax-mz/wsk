@@ -4,9 +4,9 @@
 $isAdmin = [bool]([Security.Principal.WindowsIdentity]::GetCurrent().Groups -match 'S-1-5-32-544')
 if (! $isAdmin) {
     Write-Host -ForegroundColor Red "ERROR: script must be run as Admin"
-    pause
-    exit 1
+    return
 }
+
 $ProgressPreference = 'SilentlyContinue'
 
 # Display hidden files & dirs for the current user
